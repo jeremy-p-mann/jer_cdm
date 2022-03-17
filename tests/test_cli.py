@@ -8,6 +8,7 @@ from jer_cdm.time import get_current_time_str
 LOG_PAIRS = {
     'weight': 149.0,
     'thc': 2.5,
+    'cbd': 2.5,
 }
 
 
@@ -44,7 +45,7 @@ def test_app_echos_name(name, log_result):
 
 
 def test_app_echos_value(value, log_result):
-    assert value in log_result.stdout.lower(), \
+    assert str(value) in log_result.stdout.lower(), \
         f'log_result.{log_result.stdout}'
 
 
