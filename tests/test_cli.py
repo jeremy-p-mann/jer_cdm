@@ -1,10 +1,8 @@
-from datetime import datetime
-from time import struct_time
-
 import pytest
 from typer.testing import CliRunner
 
 from jer_cdm.__main__ import app
+from jer_cdm.time import get_current_time_str
 
 
 @pytest.fixture(scope='session')
@@ -15,7 +13,7 @@ def weight():
 
 @pytest.fixture(scope='session')
 def time():
-    return datetime.now().strftime('%Y-%m-%dT%H:%M%Z')
+    return get_current_time_str()
 
 
 @pytest.fixture(scope='session')
@@ -33,6 +31,5 @@ def test_app_weight(weight, result):
     assert weight in result.stdout
 
 
-@pytest.mark.skip()
 def test_app_time(time, result):
     assert time in result.stdout
