@@ -7,8 +7,7 @@ from jer_cdm.time import get_current_time_str
 # TODO REFACTOR TO ENUM
 LOG_PAIRS = {
     'weight': 149.0,
-    'thc': 2.5,
-    'cbd': 2.5,
+    'sud': 2,
 }
 
 

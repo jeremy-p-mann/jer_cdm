@@ -12,16 +12,12 @@ def weight(weight_in_lbs: float):
     typer.echo(f"Log weight {weight_in_lbs} at {time}")
 
 
-@app.command('thc')
-def thc(thc_in_mg: float):
+@app.command('sud')
+def sud(
+    sud_level: int = typer.Argument(..., min=0, max=10),
+):
     time = get_current_time_str()
-    typer.echo(f"Log THC {thc_in_mg} at {time}")
-
-
-@app.command('cbd')
-def cbd(cbd_in_mg: float):
-    time = get_current_time_str()
-    typer.echo(f"Log CBD {cbd_in_mg} at {time}")
+    typer.echo(f"Log Subjective Units of Distress (SUD) {sud_level} at {time}")
 
 
 if __name__ == "__main__":
