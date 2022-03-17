@@ -6,7 +6,13 @@ app = typer.Typer()
 
 
 @app.command()
-def weight(weight: float):
+def weight(weight_in_lbs: float):
+    time = get_current_time_str()
+    typer.echo(f"Log Weight {weight} at {time}")
+
+
+@app.command('thc')
+def thc(thc_in_mg: float):
     time = get_current_time_str()
     typer.echo(f"Log Weight {weight} at {time}")
 

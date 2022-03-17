@@ -4,11 +4,21 @@ from typer.testing import CliRunner
 from jer_cdm.__main__ import app
 from jer_cdm.time import get_current_time_str
 
+# TODO REFACTOR TO ENUM
+LOG_PAIRS = {
+    'weight': 149.0,
+    'thc': 2.5,
+}
+
+
+@pytest.fixture(scope='session', params=LOG_PAIRS.keys())
+def name(request):
+    return request.param
+
 
 @pytest.fixture(scope='session')
-def weight():
-    weight = str(180.0)
-    return weight
+def value(name):
+    return LOG_PAIRS[name]
 
 
 @pytest.fixture(scope='session')
@@ -17,18 +27,27 @@ def time():
 
 
 @pytest.fixture(scope='session')
-def log_weight_result(weight):
+def log_result(name, value):
     runner = CliRunner()
-    return runner.invoke(app, [weight])
+    cmd = [name, str(value)]
+    return runner.invoke(app, cmd)
 
 
-def test_app_exit_code(log_weight_result):
-    assert log_weight_result.exit_code == 0
+def test_app_exit_code(log_result):
+    assert log_result.exit_code == 0, \
+        f'log_result.{log_result.stdout}'
 
 
-def test_app_weight(weight, log_weight_result):
-    assert weight in log_weight_result.stdout
+def test_app_echos_name(name, log_result):
+    assert name in log_result.stdout.lower(), \
+        f'log_result.{log_result.stdout}'
 
 
-def test_app_time(time, log_weight_result):
-    assert time in log_weight_result.stdout
+def test_app_echos_value(value, log_result):
+    assert value in log_result.stdout.lower(), \
+        f'log_result.{log_result.stdout}'
+
+
+def test_app_echos_time(time, log_result):
+    assert time in log_result.stdout, \
+        f'log_result.{log_result.stdout}'
