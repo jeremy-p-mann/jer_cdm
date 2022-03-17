@@ -17,19 +17,18 @@ def time():
 
 
 @pytest.fixture(scope='session')
-def result(weight):
+def log_weight_result(weight):
     runner = CliRunner()
-    result = runner.invoke(app, [weight])
-    return result
+    return runner.invoke(app, [weight])
 
 
-def test_app_exit_code(result):
-    assert result.exit_code == 0
+def test_app_exit_code(log_weight_result):
+    assert log_weight_result.exit_code == 0
 
 
-def test_app_weight(weight, result):
-    assert weight in result.stdout
+def test_app_weight(weight, log_weight_result):
+    assert weight in log_weight_result.stdout
 
 
-def test_app_time(time, result):
-    assert time in result.stdout
+def test_app_time(time, log_weight_result):
+    assert time in log_weight_result.stdout
