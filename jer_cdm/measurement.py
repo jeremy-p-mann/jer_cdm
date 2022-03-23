@@ -73,7 +73,7 @@ def add_measurement_row(
     measurement_row: pd.DataFrame,
     measurement_df: pd.DataFrame,
 ):
-    return pd.concat([measurement_df, measurement_row])[measurement_df.columns]
+    return pd.concat([measurement_df, measurement_row], ignore_index=True)[measurement_df.columns]
 
 
 def get_mock_omop_measurement_row():
