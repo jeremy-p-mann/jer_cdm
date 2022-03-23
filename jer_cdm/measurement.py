@@ -52,7 +52,7 @@ def get_measurement_data(filepath: Optional[str] = None) -> pd.DataFrame:
         filepath = get_measurement_data_filepath()
     ans = pd.read_csv(filepath)
     ans['datetime'] = pd.to_datetime(ans['datetime'])
-    return ans[MeasurementSchema.to_schema().columns]
+    return ans[list(MeasurementSchema.to_schema().columns.keys())]
 
 
 def get_measurement_row(
