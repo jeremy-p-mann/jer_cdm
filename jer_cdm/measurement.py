@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 import pandera as pa
@@ -40,11 +41,15 @@ class MeasurementSchema(pa.SchemaModel):
     unit_concept_id: Series[int] = pa.Field(nullable=True)
 
 
-def get_measurement_data():
+def get_measurement_data_filepath() -> str:
     if 'MEASUREMENT_DATA_FILEPATH' in os.environ:
-        filepath = os.environ['MEASUREMENT_DATA_FILEPATH']
-    else:
-        filepath = 'mocks/measurement_data_mock.csv'
+        return os.environ['MEASUREMENT_DATA_FILEPATH']
+    return 'mocks/measurement_data_mock.csv'
+
+
+def get_measurement_data(filepath: Optional[str] = None) -> pd.DataFrame:
+    if filepath is None:
+        filepath = get_measurement_data_filepath()
     ans = pd.read_csv(filepath)
     ans['datetime'] = pd.to_datetime(ans['datetime'])
     return ans[MeasurementSchema.to_schema().columns]
