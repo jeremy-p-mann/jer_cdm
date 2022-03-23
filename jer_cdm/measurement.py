@@ -1,9 +1,14 @@
+import os
+from datetime import datetime
+
 import pandas as pd
 import pandera as pa
 from pandera.typing import DateTime, Index, Series
 
+from jer_cdm.concepts import MeasurementConcept, UnitConcept
 
-class MeasurementSchema(pa.SchemaModel):
+
+class OMOPMeasurementSchema(pa.SchemaModel):
     measurement_id: Index[int]
     person_id: Series[int]
     measurement_concept_id: Series[int]
@@ -28,7 +33,45 @@ class MeasurementSchema(pa.SchemaModel):
     meas_event_field_concept_id: Series[int] = pa.Field(nullable=True)
 
 
-def get_mock_measurement_row():
+class MeasurementSchema(pa.SchemaModel):
+    measurement_concept_id: Series[int]
+    datetime: Series[DateTime]
+    value: Series[float] = pa.Field(nullable=True)
+    unit_concept_id: Series[int] = pa.Field(nullable=True)
+
+
+def get_measurement_data():
+    if 'MEASUREMENT_DATA_FILEPATH' in os.environ:
+        filepath = os.environ['MEASUREMENT_DATA_FILEPATH']
+    else:
+        filepath = 'mocks/measurement_data_mock.csv'
+    ans = pd.read_csv(filepath)
+    ans['datetime'] = pd.to_datetime(ans['datetime'])
+    return ans[MeasurementSchema.to_schema().columns]
+
+
+def get_measurement_row(
+    measurement_concept_id: MeasurementConcept,
+    datetime: datetime,
+    value: float,
+    unit_concept_id: UnitConcept,
+):
+    return pd.DataFrame.from_dict({
+        'measurement_concept_id': [measurement_concept_id.value],
+        'datetime': [datetime],
+        'value': [value],
+        'unit_concept_id': [unit_concept_id.value],
+    })
+
+
+def add_measurement_row(
+    measurement_row: pd.DataFrame,
+    measurement_df: pd.DataFrame,
+):
+    return pd.concat([measurement_df, measurement_row])[measurement_df.columns]
+
+
+def get_mock_omop_measurement_row():
     data = {
         'measurement_id': [23970945],
         'person_id': [19204409],

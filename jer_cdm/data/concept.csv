@@ -1,0 +1,4 @@
+concept_id	concept_name	domain_id	vocabulary_id	concept_class_id	standard_concept	concept_code	valid_start_date	valid_end_date	invalid_reason
+4099154	Body weight	Measurement	SNOMED	Observable Entity	S	27113001	20020131	20991231	
+8739	pound (US)	Unit	UCUM	Unit	S	[lb_us]	19700101	20991231	
+4041097	Date-time	Observation	SNOMED	Qualifier Value	S	118575009	20020131	20991231	

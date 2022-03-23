@@ -10,6 +10,7 @@ jer-cdm = {editable = true, path = "."}
 pytest = "*"
 streamlit = "*"
 altair = "*"
+pdbpp = "*"
 
 [requires]
 python_version = "3.9"
