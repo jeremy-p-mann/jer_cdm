@@ -55,6 +55,14 @@ def get_measurement_data(filepath: Optional[str] = None) -> pd.DataFrame:
     return ans[list(MeasurementSchema.to_schema().columns.keys())]
 
 
+def write_measurement_df(
+        measurement_df: pd.DataFrame, filepath: Optional[str] = None):
+    MeasurementSchema.validate(measurement_df)
+    if filepath is None:
+        filepath = get_measurement_data_filepath()
+    measurement_df.to_csv(filepath, index=False)
+
+
 def get_measurement_row(
     measurement_concept_id: MeasurementConcept,
     datetime: datetime,
