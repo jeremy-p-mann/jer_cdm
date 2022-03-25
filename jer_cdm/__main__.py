@@ -13,7 +13,18 @@ ONTOLOGY = Ontology()
 
 
 @app.command('log_weight')
-def log_weight(weight_in_lbs: float):
+def log_weight(
+    weight_in_lbs: float,
+    confirm: bool = typer.Option(True)
+):
+    if confirm:
+        delete = typer.confirm(
+            f"Confirm logging body weight {weight_in_lbs} lbs",
+            default=True
+        )
+        if not delete:
+            typer.echo("Aborting log")
+            raise typer.Abort()
     time_str = get_current_time_str()
     measurement_df = get_measurement_data()
     weight_concept = ONTOLOGY.get_concept_from_id(
