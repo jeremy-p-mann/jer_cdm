@@ -9,8 +9,8 @@ from jer_cdm.time import get_current_time, get_current_time_str
 
 # TODO REFACTOR TO ENUM
 LOG_PAIRS = {
-    'weight': 149.923485912,
-    # 'sud': 2,
+    'log_weight': 149.923485912,
+    'show_weight': 2,
 }
 
 
@@ -46,8 +46,9 @@ def test_app_exit_code(log_result):
 
 
 def test_app_echos_name(name, log_result):
-    assert name in log_result.stdout.lower(), \
-        f'log_result.{log_result.stdout}'
+    assert set(name.split('_')).issubset(
+        set(log_result.stdout.lower().split(' '))
+    ), f'log_result.{log_result.stdout}'
 
 
 def test_app_echos_value(value, log_result):
@@ -60,12 +61,13 @@ def test_app_echos_time(time, log_result):
         f'log_result.{log_result.stdout}'
 
 
-def test_measurement_logged_correctly(time, ontology, log_result, value):
+def test_measurement_logged_correctly(time, ontology, log_result, name, value):
     # concept = ontology.get_concept_from_endpoint(value)
     # unit = ontology.get_unit(concept)
-    measurement_df = get_measurement_data()
-    assert measurement_df['datetime'].iloc[-1] == pd.Timestamp(time)
-    assert measurement_df['value'].iloc[-1] == value
+    if 'log' in name.split('_'):
+        measurement_df = get_measurement_data()
+        assert measurement_df['datetime'].iloc[-1] == pd.Timestamp(time)
+        assert measurement_df['value'].iloc[-1] == value
     # assert measurement_df['measurement_concept_id'].iloc[-1] == concept.value
     # assert measurement_df['unit_concept_id'].iloc[-1] == unit.value
     # TODO: test unit concept id
