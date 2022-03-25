@@ -78,7 +78,7 @@ class Ontology():
         ans_id = ans_ids.iloc[0]
         return self.get_concept_from_id(ans_id)
 
-    def get_unit(self, concept: Concept) -> Concept:
+    def get_unit(self, concept: Concept) -> UnitConcept:
         maps_to_df = self._concept_relationship_df.loc[[concept.value], :]
         ans_ids = maps_to_df[maps_to_df.relationship_id ==
                              'Has unit'].concept_id_2

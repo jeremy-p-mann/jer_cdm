@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 def get_datetime_format() -> str:
-    return '%Y-%m-%dT%H:%M%Z'
+    return '%Y-%m-%d %H:%M%Z'
 
 
 def get_current_time() -> datetime:
