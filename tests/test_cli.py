@@ -5,7 +5,7 @@ from typer.testing import CliRunner
 from jer_cdm.__main__ import app
 from jer_cdm.measurement import (get_measurement_data, write_measurement_df,
                                  get_measurement_data_filepath)
-from jer_cdm.time import get_current_time, get_current_time_str
+from jer_cdm.time import get_current_time_str
 
 # TODO REFACTOR TO ENUM
 LOG_PAIRS = {
@@ -33,6 +33,8 @@ def time():
 def log_result(name, value):
     runner = CliRunner()
     cmd = [name, str(value)]
+    if 'log' in name.split('_'):
+        cmd += ['--no-confirm']
     original_measurement_df = get_measurement_data()
     yield runner.invoke(app, cmd)
     write_measurement_df(original_measurement_df)
